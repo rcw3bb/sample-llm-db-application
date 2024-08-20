@@ -10,11 +10,16 @@ This project demonstrates a sample application that utilizes a Large Language Mo
 - **Similarity Search**: Finds the most similar text in the database to a given query using vector similarity.
 - **Question Answering**: Answers questions based on the most similar text found in the database.
 
+## Requirements
+
+- Python 3.12.x
+- Docker
+
 ## Installation
 
 1. **Clone the repository**:
     ```sh
-    git clone https://github.com/yourusername/sample-llm-db-application.git
+    git clone https://github.com/rcw3bb/sample-llm-db-application.git
     cd sample-llm-db-application
     ```
 
