@@ -1,0 +1,19 @@
+version: '3.9'
+
+services:
+  # pgvector service with pre-configured database
+  llm-app-db-vector:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped  # Restart container unless manually stopped
+    ports:
+      - "5432:5432"  # Map container port 5432 to host port 5432
+    environment:
+      POSTGRES_DB: llmvector  # Database name (same as postgres)
+      POSTGRES_USER: postgres  # Database user (same as postgres)
+      POSTGRES_PASSWORD: mypassword  # Database password (same as postgres)
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persist data volume
+
+volumes:
+  # Volume to persist postgres data
+  postgres_data: {}

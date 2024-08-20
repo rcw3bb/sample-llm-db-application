@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "sample-llm-db-application"
+version = "1.0.0"
+description = "A sample LLM that utilizes vector database."
+authors = ["Ron Webb <ron@ronella.xyz>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "~3.12.0"
+datasets = "^2.20.0"
+transformers = "^4.42.4"
+psycopg2 = "^2.9.9"
+torch = "^2.4.0"
+pgvector = "^0.3.2"
+numpy = "~1.26.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
