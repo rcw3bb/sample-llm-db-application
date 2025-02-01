@@ -49,6 +49,8 @@ def prepare_database(connection):
     # Create the vector extension
     cursor.execute("CREATE EXTENSION IF NOT EXISTS vector")
 
+    register_vector(conn)
+
     # Create a table to store embeddings and content
     # The embedding column is defined as a vector(384) column.
     #
@@ -75,7 +77,6 @@ def prepare_database(connection):
         embedding = get_embedding(text)
         cursor.execute("INSERT INTO qa_embeddings (content, embedding) VALUES (%s, %s)", (text, embedding))
 
-    connection.commit()
     return cursor
 
 
@@ -140,7 +141,9 @@ conn = connect_to_postgres(
     port="5432"
 )
 
-register_vector(conn)
+# Enable autocommit
+conn.autocommit = True
+
 try:
     # Example usage
     questions = [
