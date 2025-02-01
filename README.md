@@ -39,10 +39,10 @@ This project demonstrates a sample application that utilizes a Large Language Mo
 
 1. **Load Hugging Face models**:
     The script loads the following models:
-    
+
     - Embedding model: `sentence-transformers/all-MiniLM-L6-v2`
     - QA model: `bert-large-uncased-whole-word-masking-finetuned-squad`
-    
+
 2. **Insert sample data and embeddings**:
     The script inserts predefined sample texts and their embeddings into the database.
 
@@ -50,20 +50,20 @@ This project demonstrates a sample application that utilizes a Large Language Mo
     The script answers predefined questions by finding the most similar text in the database and using the QA model to generate answers.
 
 4. **Run the script**:
-   
+
     ```sh
     python hf-db-question-answering.py
     ```
-    
-    > Run the following of a subset of squad_v2 dataset as sample data.
+
+    > Run the following for a subset of the SQuAD v2 dataset as sample data.
     >
-    > ```
+    > ```sh
     > python hf-db-question-answering-squad.py
     > ```
 
 ## Example
 
-The script will output answers to the predefined questions along with the confidence score and the context from which the answer was derived. Then the final answers are based on the first score that is equal or greater than 0.5.
+The script will output answers to the predefined questions along with the confidence score and the context from which the answer was derived. The final answers are based on the first score that is equal to or greater than 0.5.
 
 ## Author
 
