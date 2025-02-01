@@ -39,9 +39,10 @@ This project demonstrates a sample application that utilizes a Large Language Mo
 
 1. **Load Hugging Face models**:
     The script loads the following models:
+    
     - Embedding model: `sentence-transformers/all-MiniLM-L6-v2`
-    - QA model: `distilbert-base-cased-distilled-squad`
-
+    - QA model: `bert-large-uncased-whole-word-masking-finetuned-squad`
+    
 2. **Insert sample data and embeddings**:
     The script inserts predefined sample texts and their embeddings into the database.
 
@@ -55,7 +56,7 @@ This project demonstrates a sample application that utilizes a Large Language Mo
 
 ## Example
 
-The script will output answers to the predefined questions along with the confidence score and the context from which the answer was derived.
+The script will output answers to the predefined questions along with the confidence score and the context from which the answer was derived. Then the final answers based on the highest confidence score.
 
 ## Author
 

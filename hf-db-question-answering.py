@@ -102,27 +102,25 @@ def answer_question(cursor, question):
     question_embedding = get_embedding(question)
 
     # Perform similarity search
-    cursor.execute("SELECT content, embedding <=> %s AS distance FROM qa_embeddings ORDER BY distance LIMIT 1",
+    cursor.execute("SELECT content, embedding <=> %s AS distance FROM qa_embeddings ORDER BY distance LIMIT 5",
                    (question_embedding,))
-    result_set = cursor.fetchone()
-    most_similar_text = result_set[0]
-    distance = result_set[1]
+    relevant_contexts = cursor.fetchall()
 
-    # Use question-answering model
-    qa_result = qa_pipeline(question=question, context=most_similar_text)
+    results = []
 
-    return {
-        "question": question,
-        "answer": qa_result["answer"],
-        "score": qa_result["score"],
-        "context": most_similar_text,
-        "similarity_distance": distance
-    }
+    # Extract answers from relevant contexts
+    for context in relevant_contexts:
+        result = qa_pipeline(question=question, context=context[0])
+        result["question"] = question
+        result["context"] = context[0]
+        results.append(result)
+
+    return results
 
 
 # Load Hugging Face models
 embedding_model_name = "sentence-transformers/all-MiniLM-L6-v2"
-qa_model_name = "distilbert-base-cased-distilled-squad"
+qa_model_name = "bert-large-uncased-whole-word-masking-finetuned-squad"
 
 embedding_tokenizer = AutoTokenizer.from_pretrained(embedding_model_name)
 embedding_model = AutoModel.from_pretrained(embedding_model_name)
@@ -146,22 +144,39 @@ register_vector(conn)
 try:
     # Example usage
     questions = [
-        "What animal jumps over the dog?",
-        "What does the proverb say about a journey?",
+        "What is the fox known for?",
+        "What proverb emphasizes on perseverance in achieving long-term goals?",
         "Who wrote 'To be or not to be'?"
     ]
 
     cur = prepare_database(conn)
 
     try:
+        final_results = {}
         for ques in questions:
-            result = answer_question(cur, ques)
-            print(f"Question: {result['question']}")
-            print(f"Answer: {result['answer']}")
-            print(f"Confidence Score: {result['score']:.4f}")
-            print(f"Context: {result['context']}")
-            print(f"Similarity Distance: {result['similarity_distance']:.4f}")
-            print("---")
+            results = answer_question(cur, ques)
+            for result in results:
+                if result['score'] < 0.5:  # Threshold for unanswerable questions
+                    print(f"Question: {result['question']}")
+                    print("[Answer: This question is unanswerable based on the given context.]")
+                    print(f"Context: {result['context']}")
+                    print(f"Score: {result['score']:.4f}")
+                else:
+                    if result['question'] not in final_results:
+                        final_results[result['question']] = result['answer']
+
+                    print(f"Question: {result['question']}")
+                    print(f"Answer: {result['answer']}")
+                    print(f"Context: {result['context']}")
+                    print(f"Score: {result['score']:.4f}")
+
+                print("-" * 50)
+
+        print("\n\n----[Final Answers]-------------------------------")
+        for key, value in final_results.items():
+            print(f"Question: {key}")
+            print(f"Answer: {value}")
+            print("-" * 50)
     finally:
         cur.close()
 
