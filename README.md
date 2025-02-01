@@ -50,13 +50,20 @@ This project demonstrates a sample application that utilizes a Large Language Mo
     The script answers predefined questions by finding the most similar text in the database and using the QA model to generate answers.
 
 4. **Run the script**:
+   
     ```sh
     python hf-db-question-answering.py
     ```
+    
+    > Run the following of a subset of squad_v2 dataset as sample data.
+    >
+    > ```
+    > python hf-db-question-answering-squad.py
+    > ```
 
 ## Example
 
-The script will output answers to the predefined questions along with the confidence score and the context from which the answer was derived. Then the final answers based on the highest confidence score.
+The script will output answers to the predefined questions along with the confidence score and the context from which the answer was derived. Then the final answers are based on the first score that is equal or greater than 0.5.
 
 ## Author
 
