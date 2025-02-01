@@ -46,6 +46,9 @@ def prepare_database(connection):
 
     cursor = connection.cursor()
 
+    # Create the vector extension
+    cursor.execute("CREATE EXTENSION IF NOT EXISTS vector")
+
     # Create a table to store embeddings and content
     # The embedding column is defined as a vector(384) column.
     #
